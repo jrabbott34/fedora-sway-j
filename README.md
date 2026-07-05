@@ -58,9 +58,10 @@ Clone this repo into the guest, then run the two scripts in order:
 sudo dnf -y install git
 git clone <this-repo-url>
 cd fedora-sway-j
-./scripts/setup-sway.sh       # installs the dnf-available package set
-# ...install the manual/COPR/Flatpak packages below if you want the full stack...
-./scripts/deploy-configs.sh   # symlinks dotfiles/.config/* into ~/.config
+./scripts/setup-sway.sh          # installs the dnf-available package set
+./scripts/install-nerd-fonts.sh  # every config below references FiraCode Nerd Font
+# ...install the other manual/COPR/Flatpak packages below if you want the full stack...
+./scripts/deploy-configs.sh      # symlinks dotfiles/.config/* into ~/.config
 ```
 
 Then log out and select Sway from GDM, or run `dbus-run-session sway`.
@@ -90,7 +91,7 @@ corresponding config just won't have anything to launch:
 | Image viewer | `swayimg` | not packaged | COPR or build from source |
 | Cursor theme | `bibata-cursor-theme` | not packaged | manual install from upstream GitHub releases |
 | GTK theme | `catppuccin-gtk-theme-mocha` | not packaged | manual install script from the Catppuccin GTK repo |
-| Nerd Fonts | `ttf-firacode-nerd`, `powerline-fonts` | not packaged | download from the nerd-fonts GitHub releases, or a COPR that mirrors them |
+| Nerd Fonts | `ttf-firacode-nerd`, `powerline-fonts` | not packaged | `./scripts/install-nerd-fonts.sh` (downloads FiraCode Nerd Font from upstream releases into `~/.local/share/fonts`) |
 | MS-compatible fonts | `ttf-ms-fonts` | not packaged | RPM Fusion nonfree's `mscore-fonts-installer` |
 | GDM theming GUI | `gdm-settings` | not packaged | Flatpak: `io.github.realmazharhussain.GdmSettings` |
 | Trezor Suite | `trezor-suite-bin` | not packaged | Flatpak: `io.trezor.trezor-suite`, or manual download |
