@@ -64,9 +64,12 @@ client.urgent           #f7768e #1a1b26 #f7768e #f7768e   #f7768e
 exec --no-startup-id systemctl --user import-environment WAYLAND_DISPLAY SWAYSOCK XDG_CURRENT_DESKTOP XDG_SESSION_TYPE
 exec --no-startup-id sleep 1 && systemctl --user restart libinput-gestures.service
 
-exec --no-startup-id awww
+# awww isn't installed on this Fedora build (build-from-source, see README) --
+# skip starting it as a standalone daemon; waypaper drives swaybg directly
+# instead, so nothing needs to run ahead of time.
+# exec --no-startup-id awww
 exec --no-startup-id kanshi
-exec_always --no-startup-id sleep 0.5 && waypaper --restore --backend awww
+exec_always --no-startup-id sleep 0.5 && waypaper --restore --backend swaybg
 
 exec --no-startup-id swaync
 exec --no-startup-id ~/.config/sway/scripts/wob-start.sh
@@ -114,7 +117,7 @@ bindsym $mod+Shift+e      exec wlogout -b 3 -c 20 -r 20
 bindsym $mod+n            exec swaync-client -t
 
 # wallpaper picker
-bindsym $mod+Shift+w      exec waypaper --random --backend awww
+bindsym $mod+Shift+w      exec waypaper --random --backend swaybg
 
 # ─── keybindings — sway control ───────────────────────────────────────────────
 bindsym $mod+q            kill
