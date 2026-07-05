@@ -73,7 +73,21 @@ DNF_PKGS=(
   setroubleshoot-server policycoreutils-python-utils
 )
 
-sudo dnf -y install "${DNF_PKGS[@]}"
+# A single bad/renamed package name makes `dnf install` fail the whole
+# batch and install NOTHING -- so try the fast batch path first, and only
+# fall back to installing one at a time (slower, but a bad name only
+# costs that one package) if the batch install fails.
+if ! sudo dnf -y install "${DNF_PKGS[@]}"; then
+  echo "==> Batch install failed -- retrying package-by-package to find the bad name(s)..."
+  FAILED_PKGS=()
+  for pkg in "${DNF_PKGS[@]}"; do
+    sudo dnf -y install "$pkg" || FAILED_PKGS+=("$pkg")
+  done
+  if [[ ${#FAILED_PKGS[@]} -gt 0 ]]; then
+    echo "==> Could not install (check exact name for your Fedora release with: dnf search <name>):"
+    printf '    %s\n' "${FAILED_PKGS[@]}"
+  fi
+fi
 
 # Best-effort extras: package names sway-j used (foomatic-db-engine,
 # foomatic-db) or that have shifted/renamed across Fedora releases
