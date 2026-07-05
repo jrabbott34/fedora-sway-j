@@ -27,12 +27,14 @@ DNF_PKGS=(
 
   # file management
   thunar thunar-volman thunar-archive-plugin gvfs gvfs-afc gvfs-smb \
-  samba xfce4-settings tumbler file-roller gnome-disk-utility dosfstools
+  samba xfce4-settings tumbler file-roller gnome-disk-utility dosfstools \
+  lxappearance
 
   # system / shell utilities
+  curl git wget \
   htop btop bat eza jq cava fastfetch cmatrix acpi sysstat \
   brightnessctl power-profiles-daemon gnome-keyring seahorse udiskie \
-  wlsunset yad timeshift
+  wlsunset yad timeshift kernel-devel
 
   # network
   iw network-manager-applet NetworkManager-openvpn openvpn
@@ -55,7 +57,7 @@ DNF_PKGS=(
   bluez blueman
 
   # printing / scanning
-  cups cups-pdf system-config-printer ghostscript gutenprint \
+  cups cups-pdf system-config-printer ghostscript gsfonts gutenprint \
   foomatic-filters avahi nss-mdns sane-backends sane-airscan ipp-usb simple-scan
 
   # kernel/firmware (Fedora naming differs from Arch)
@@ -72,6 +74,16 @@ DNF_PKGS=(
 )
 
 sudo dnf -y install "${DNF_PKGS[@]}"
+
+# Best-effort extras: package names sway-j used (foomatic-db-engine,
+# foomatic-db) or that have shifted/renamed across Fedora releases
+# (fontawesome fonts, gedit). Installed one at a time so a name that
+# doesn't match your release's repos just gets skipped instead of
+# aborting the whole script.
+EXTRA_PKGS=(fontawesome-fonts foomatic-db-engine foomatic-db gedit)
+for pkg in "${EXTRA_PKGS[@]}"; do
+  sudo dnf -y install "$pkg" || echo "  (skipped: $pkg not found -- try: dnf search $pkg)"
+done
 
 sudo systemctl enable --now bluetooth.service
 sudo systemctl enable --now libvirtd.service
