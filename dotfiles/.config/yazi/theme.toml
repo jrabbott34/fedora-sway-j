@@ -1,0 +1,103 @@
+# Yazi — Tokyo Night theme
+
+[manager]
+cwd = { fg = "#7dcfff" }
+
+hovered         = { fg = "#1a1b26", bg = "#7aa2f7" }
+preview_hovered = { underline = true }
+
+find_keyword  = { fg = "#e0af68", bold = true, italic = true, underline = true }
+find_position = { fg = "#ff9e64", bold = true, italic = true }
+
+marker_copied  = { fg = "#9ece6a", bg = "#9ece6a" }
+marker_cut     = { fg = "#f7768e", bg = "#f7768e" }
+marker_marked  = { fg = "#bb9af7", bg = "#bb9af7" }
+marker_selected = { fg = "#7aa2f7", bg = "#7aa2f7" }
+
+tab_active   = { fg = "#1a1b26", bg = "#7aa2f7" }
+tab_inactive = { fg = "#787c99", bg = "#1e2030" }
+tab_width    = 1
+
+count_copied   = { fg = "#1a1b26", bg = "#9ece6a" }
+count_cut      = { fg = "#1a1b26", bg = "#f7768e" }
+border_symbol  = "│"
+border_style   = { fg = "#414868" }
+
+[status]
+separator_open  = ""
+separator_close = ""
+separator_style = { fg = "#1e2030", bg = "#1e2030" }
+
+mode_normal = { fg = "#1a1b26", bg = "#7aa2f7", bold = true }
+mode_select = { fg = "#1a1b26", bg = "#9ece6a", bold = true }
+mode_unset  = { fg = "#1a1b26", bg = "#f7768e", bold = true }
+
+progress_label  = { bold = true }
+progress_normal = { fg = "#7aa2f7", bg = "#1e2030" }
+progress_error  = { fg = "#f7768e", bg = "#1e2030" }
+
+permissions_t = { fg = "#9ece6a" }
+permissions_r = { fg = "#e0af68" }
+permissions_w = { fg = "#f7768e" }
+permissions_x = { fg = "#9ece6a", bold = true }
+permissions_s = { fg = "#bb9af7" }
+
+[select]
+border   = { fg = "#7aa2f7" }
+active   = { fg = "#7aa2f7", bold = true }
+inactive = { fg = "#787c99" }
+
+[input]
+border   = { fg = "#7aa2f7" }
+title    = { fg = "#7aa2f7" }
+value    = { fg = "#c0caf5" }
+selected = { reversed = true }
+
+[completion]
+border   = { fg = "#7aa2f7" }
+active   = { bg = "#1e2030" }
+inactive = {}
+
+[tasks]
+border  = { fg = "#7aa2f7" }
+title   = {}
+hovered = { underline = true }
+
+[which]
+mask            = { bg = "#1a1b26" }
+cand            = { fg = "#7dcfff" }
+rest            = { fg = "#787c99" }
+desc            = { fg = "#bb9af7" }
+separator       = "  "
+separator_style = { fg = "#414868" }
+
+[help]
+on      = { fg = "#7aa2f7" }
+run     = { fg = "#bb9af7" }
+hovered = { bg = "#1e2030", bold = true }
+footer  = { fg = "#1a1b26", bg = "#7aa2f7" }
+
+[filetype]
+rules = [
+    # images
+    { mime = "image/*", fg = "#7dcfff" },
+    # video/audio
+    { mime = "video/*", fg = "#bb9af7" },
+    { mime = "audio/*", fg = "#bb9af7" },
+    # archives
+    { mime = "application/zip",             fg = "#e0af68" },
+    { mime = "application/gzip",            fg = "#e0af68" },
+    { mime = "application/x-tar",           fg = "#e0af68" },
+    { mime = "application/x-bzip2",         fg = "#e0af68" },
+    { mime = "application/x-7z-compressed", fg = "#e0af68" },
+    { mime = "application/x-rar",           fg = "#e0af68" },
+    # documents
+    { mime = "application/pdf",  fg = "#f7768e" },
+    { mime = "application/doc",  fg = "#7aa2f7" },
+    { mime = "application/docx", fg = "#7aa2f7" },
+    # text
+    { mime = "text/*", fg = "#9ece6a" },
+    # fallback
+    { name = "*/", fg = "#7aa2f7" },
+    { name = "*",  fg = "#c0caf5" },
+]

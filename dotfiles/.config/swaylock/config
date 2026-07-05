@@ -1,0 +1,53 @@
+# swaylock-effects configuration
+# Takes a screenshot of your desktop, blurs it, and overlays the lock UI
+
+# grab live screenshot as background and blur it
+screenshots
+effect-blur=9x5
+effect-vignette=0.4:0.6
+
+# fade in smoothly
+fade-in=0.15
+
+# clock display
+clock
+timestr=%I:%M %p
+datestr=%A,  %B %d
+
+# behaviour
+ignore-empty-password
+show-failed-attempts
+indicator
+
+# indicator sizing
+indicator-radius=110
+indicator-thickness=8
+separator-color=00000000
+
+# ── ring colors ────────────────────────────────────────────────────────────────
+ring-color=414868ff
+ring-clear-color=9ece6aff
+ring-caps-lock-color=e0af68ff
+ring-ver-color=7aa2f7ff
+ring-wrong-color=f7768eff
+
+line-uses-ring
+
+# ── inside fill ────────────────────────────────────────────────────────────────
+inside-color=1a1b26cc
+inside-clear-color=1a1b26cc
+inside-caps-lock-color=1a1b26ee
+inside-ver-color=1a1b26cc
+inside-wrong-color=1a1b26cc
+
+# ── key highlight ──────────────────────────────────────────────────────────────
+key-hl-color=7aa2f7ff
+caps-lock-key-hl-color=e0af68ff
+bs-hl-color=f7768eff
+
+# ── text ──────────────────────────────────────────────────────────────────────
+text-color=c0caf5ff
+text-clear-color=9ece6aff
+text-caps-lock-color=e0af68ff
+text-ver-color=7aa2f7ff
+text-wrong-color=f7768eff

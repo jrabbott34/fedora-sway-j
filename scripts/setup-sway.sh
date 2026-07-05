@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
-# Post-install setup: run inside a fresh Fedora Server install to bring up
-# a minimal Sway session, no GNOME/DE baggage.
+# Post-install setup: run inside a fresh Fedora install to bring up the
+# sway-j desktop stack, ported from the Arch/AUR build at jrabbott34/sway-j.
+#
+# Everything in DNF_PKGS below is available from Fedora's official repos.
+# Everything sway-j used that Fedora does NOT package is listed in the
+# "not available via dnf" section at the bottom instead of guessed at here
+# -- installing those is a manual/COPR/Flatpak step, see README.md.
 set -euo pipefail
 
 if [[ $EUID -eq 0 ]]; then
@@ -10,26 +15,87 @@ fi
 
 sudo dnf -y upgrade
 
-# Core Sway session + Wayland portals
-sudo dnf -y install \
-  sway swaylock swayidle swaybg \
-  waybar \
-  foot \
-  wofi \
-  xdg-desktop-portal-wlr \
-  polkit \
-  NetworkManager-tui \
-  pipewire pipewire-pulseaudio wireplumber \
-  brightnessctl playerctl \
-  grim slurp wl-clipboard \
-  mesa-dri-drivers mesa-vulkan-drivers \
+DNF_PKGS=(
+  # sway session (vanilla sway -- see README for the SwayFX caveat)
+  sway swaylock swayidle swaybg waybar wofi
+  wl-clipboard wlr-randr xdg-desktop-portal-wlr kanshi wob
+  grim slurp swappy
+  polkit xfce-polkit
+
+  # terminals / shell
+  alacritty foot fish starship yazi
+
+  # file management
+  thunar thunar-volman thunar-archive-plugin gvfs gvfs-afc gvfs-smb \
+  samba xfce4-settings tumbler file-roller gnome-disk-utility dosfstools
+
+  # system / shell utilities
+  htop btop bat eza jq cava fastfetch cmatrix acpi sysstat \
+  brightnessctl power-profiles-daemon gnome-keyring seahorse udiskie \
+  wlsunset yad timeshift
+
+  # network
+  iw network-manager-applet NetworkManager-openvpn openvpn
+
+  # audio / media
+  pipewire pipewire-alsa pipewire-pulseaudio wireplumber pavucontrol \
+  playerctl mpv yt-dlp
+
+  # appearance (fonts/themes/cursors NOT covered here -- see README)
+  qt5-qtwayland qt6ct papirus-icon-theme
+
+  # apps
+  firefox libreoffice
+
+  # virtualization / remote
+  virt-manager qemu-kvm libvirt edk2-ovmf dnsmasq iptables \
+  qemu-guest-agent spice-vdagent virt-viewer remmina freerdp
+
+  # bluetooth
+  bluez blueman
+
+  # printing / scanning
+  cups cups-pdf system-config-printer ghostscript gutenprint \
+  foomatic-filters avahi nss-mdns sane-backends sane-airscan ipp-usb simple-scan
+
+  # kernel/firmware (Fedora naming differs from Arch)
+  microcode_ctl linux-firmware
+
+  # display manager
+  gdm
+
+  # mesa / GPU (for Wayland in the VM)
+  mesa-dri-drivers mesa-vulkan-drivers
+
+  # SELinux troubleshooting -- keep this on Fedora, Arch has no equivalent
   setroubleshoot-server policycoreutils-python-utils
+)
 
-# audit2allow / setroubleshoot are included above so SELinux denials from
-# Sway/Waybar/etc. can be diagnosed with `sudo ausearch -m avc -ts recent`
-# and `audit2allow` rather than guessing.
+sudo dnf -y install "${DNF_PKGS[@]}"
 
-echo
-echo "Base Sway session installed."
-echo "Log in and start Sway with: sway"
-echo "If it fails to start under 3D accel, retry with: WLR_RENDERER=pixman sway"
+sudo systemctl enable --now bluetooth.service
+sudo systemctl enable --now libvirtd.service
+sudo systemctl enable --now NetworkManager.service
+sudo systemctl enable --now avahi-daemon.service
+sudo systemctl enable --now cups.socket
+sudo systemctl enable --now ipp-usb.service
+sudo systemctl enable gdm.service
+
+sudo usermod -aG input "$USER" || true
+sudo usermod -aG libvirt "$USER"
+
+cat <<'EOF'
+
+==> Base package set installed. These sway-j components are NOT in
+    Fedora's repos and need a manual/COPR/Flatpak install -- see
+    README.md "Porting notes" before running deploy-configs.sh:
+
+    swayfx, swaylock-effects, swaync, wlogout, cliphist, awww,
+    hyprpicker, libinput-gestures, nwg-look, waypaper, swayimg,
+    bibata-cursor-theme, catppuccin-gtk-theme, nerd fonts, gdm-settings,
+    trezor-suite-bin
+
+Once those are sorted, run ./scripts/deploy-configs.sh to symlink the
+dotfiles, then log in and start Sway with: sway
+(software fallback: WLR_RENDERER=pixman sway)
+EOF

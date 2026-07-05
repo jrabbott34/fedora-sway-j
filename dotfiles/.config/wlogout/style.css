@@ -1,0 +1,91 @@
+* {
+    font-family: "FiraCode Nerd Font", monospace;
+    font-size: 14px;
+    letter-spacing: 1px;
+    background: none;
+}
+
+window {
+    background-color: rgba(26, 27, 38, 0.88);
+}
+
+button {
+    color: #565f89;
+    background-color: rgba(30, 32, 48, 0.65);
+    border: 2px solid #2a2b3d;
+    border-radius: 16px;
+    margin: 8px;
+
+    background-repeat: no-repeat;
+    background-position: center 28%;
+    background-size: 80px;
+
+    min-width: 150px;
+    min-height: 180px;
+
+    transition: background-color 150ms ease,
+                border-color     150ms ease,
+                color            150ms ease,
+                box-shadow       150ms ease;
+}
+
+/* ── per-button hover glow colors ─────────────────────────────────────── */
+#lock {
+    background-image: image(url("/usr/share/wlogout/icons/lock.png"));
+}
+#lock:hover {
+    color: #bb9af7;
+    border-color: #bb9af7;
+    background-color: rgba(187, 154, 247, 0.12);
+    box-shadow: 0 0 20px rgba(187, 154, 247, 0.25);
+}
+
+#logout {
+    background-image: image(url("/usr/share/wlogout/icons/logout.png"));
+}
+#logout:hover {
+    color: #f7768e;
+    border-color: #f7768e;
+    background-color: rgba(247, 118, 142, 0.12);
+    box-shadow: 0 0 20px rgba(247, 118, 142, 0.25);
+}
+
+#suspend {
+    background-image: image(url("/usr/share/wlogout/icons/suspend.png"));
+}
+#suspend:hover {
+    color: #2ac3de;
+    border-color: #2ac3de;
+    background-color: rgba(42, 195, 222, 0.12);
+    box-shadow: 0 0 20px rgba(42, 195, 222, 0.25);
+}
+
+#hibernate {
+    background-image: image(url("/usr/share/wlogout/icons/hibernate.png"));
+}
+#hibernate:hover {
+    color: #7aa2f7;
+    border-color: #7aa2f7;
+    background-color: rgba(122, 162, 247, 0.12);
+    box-shadow: 0 0 20px rgba(122, 162, 247, 0.25);
+}
+
+#reboot {
+    background-image: image(url("/usr/share/wlogout/icons/reboot.png"));
+}
+#reboot:hover {
+    color: #e0af68;
+    border-color: #e0af68;
+    background-color: rgba(224, 175, 104, 0.12);
+    box-shadow: 0 0 20px rgba(224, 175, 104, 0.25);
+}
+
+#shutdown {
+    background-image: image(url("/usr/share/wlogout/icons/shutdown.png"));
+}
+#shutdown:hover {
+    color: #f7768e;
+    border-color: #f7768e;
+    background-color: rgba(247, 118, 142, 0.12);
+    box-shadow: 0 0 20px rgba(247, 118, 142, 0.25);
+}

@@ -1,0 +1,87 @@
+window {
+    margin: 0;
+    border: 1px solid #414868;
+    border-radius: 18px;
+    background-color: rgba(22, 22, 30, 0.92);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+    font-family: "FiraCode Nerd Font", monospace;
+    font-size: 14px;
+}
+
+#input {
+    margin: 14px 14px 8px 14px;
+    padding: 10px 16px;
+    color: #c0caf5;
+    background-color: rgba(30, 32, 48, 0.9);
+    border: 1px solid #414868;
+    border-radius: 12px;
+    outline: none;
+    font-size: 15px;
+    caret-color: #7aa2f7;
+}
+
+#input:focus {
+    border-color: #7aa2f7;
+    box-shadow: 0 0 0 2px rgba(122, 162, 247, 0.2);
+}
+
+#inner-box {
+    margin: 0 8px 8px 8px;
+    background: transparent;
+}
+
+#outer-box {
+    margin: 0;
+    padding: 0;
+    background: transparent;
+}
+
+#scroll {
+    margin: 0;
+    padding: 0;
+}
+
+#text {
+    padding: 2px 8px;
+    color: #c0caf5;
+    font-size: 14px;
+}
+
+#text:selected {
+    color: #1a1b26;
+}
+
+#entry {
+    padding: 6px 8px;
+    border-radius: 10px;
+    margin: 2px 4px;
+    background: transparent;
+    transition: all 0.15s ease;
+}
+
+#entry:selected {
+    background: linear-gradient(135deg, #7aa2f7, #bb9af7);
+    border-radius: 10px;
+    outline: none;
+    box-shadow: 0 2px 12px rgba(122, 162, 247, 0.4);
+}
+
+#entry:hover {
+    background-color: rgba(42, 43, 61, 0.8);
+    border-radius: 10px;
+}
+
+image {
+    padding-right: 10px;
+}
+
+/* hide scrollbar */
+scrolledwindow undershoot.top,
+scrolledwindow undershoot.bottom {
+    background: none;
+}
+
+scrollbar {
+    opacity: 0;
+    min-width: 0;
+}

@@ -1,0 +1,298 @@
+/* ── palette (Tokyo Night) ─────────────────────────────────────────────── */
+@define-color base   #1a1b26;
+@define-color mantle #16161e;
+@define-color crust  #13131a;
+@define-color text   #c0caf5;
+@define-color subtext #787c99;
+@define-color blue   #7aa2f7;
+@define-color lavender #b4befe;
+@define-color sky    #89dceb;
+@define-color teal   #2ac3de;
+@define-color green  #9ece6a;
+@define-color yellow #e0af68;
+@define-color peach  #ff9e64;
+@define-color red    #f7768e;
+@define-color pink   #bb9af7;
+@define-color mauve  #9d7cd8;
+@define-color surface0 #1e2030;
+@define-color surface1 #2a2b3d;
+@define-color overlay0 #414868;
+
+/* ── global reset ──────────────────────────────────────────────────────── */
+* {
+    font-family: "FiraCode Nerd Font", "Font Awesome 6 Free", monospace;
+    font-size: 13px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+}
+
+/* ── bar ───────────────────────────────────────────────────────────────── */
+window#waybar {
+    background-color: alpha(@base, 0.92);
+    border-bottom: 2px solid @surface1;
+    border-radius: 10px;
+    color: @text;
+    transition: background-color 0.3s ease;
+}
+
+window#waybar.hidden {
+    opacity: 0.2;
+}
+
+/* ── common pill wrapper ───────────────────────────────────────────────── */
+.modules-left,
+.modules-center,
+.modules-right {
+    background: transparent;
+}
+
+/* shared module base */
+#workspaces,
+#mode,
+#scratchpad,
+#network,
+#pulseaudio,
+#cpu,
+#memory,
+#battery,
+#power-profiles-daemon,
+#idle_inhibitor,
+#tray {
+    background-color: @surface0;
+    color: @text;
+    border-radius: 8px;
+    padding: 0 12px;
+    margin: 4px 3px;
+}
+
+/* ── workspaces ────────────────────────────────────────────────────────── */
+#workspaces {
+    padding: 0 4px;
+    background-color: @surface0;
+}
+
+#workspaces button {
+    padding: 0 8px;
+    background: transparent;
+    color: @subtext;
+    border-radius: 6px;
+    margin: 2px 1px;
+    transition: all 0.15s ease;
+    font-weight: bold;
+    min-width: 28px;
+}
+
+#workspaces button:hover {
+    background-color: @surface1;
+    color: @text;
+}
+
+#workspaces button.focused {
+    background-color: @blue;
+    color: @base;
+}
+
+#workspaces button.urgent {
+    background-color: @red;
+    color: @base;
+}
+
+#workspaces button.persistent {
+    color: @overlay0;
+}
+
+/* ── mode ──────────────────────────────────────────────────────────────── */
+#mode {
+    background-color: @yellow;
+    color: @base;
+    font-weight: bold;
+}
+
+/* ── scratchpad ────────────────────────────────────────────────────────── */
+#scratchpad {
+    background-color: @surface1;
+    color: @lavender;
+}
+
+/* ── clock ─────────────────────────────────────────────────────────────── */
+#clock {
+    color: @sky;
+    font-weight: bold;
+    background-color: @surface0;
+    border-radius: 0 8px 8px 0;
+    padding: 0 14px 0 10px;
+    margin: 4px 3px 4px 0;
+    min-width: 110px;
+}
+
+#clock tooltip {
+    background: @mantle;
+    border: 1px solid @surface1;
+    border-radius: 10px;
+    color: @text;
+    padding: 8px;
+    font-size: 12px;
+}
+
+/* ── network ───────────────────────────────────────────────────────────── */
+#network {
+    color: @green;
+}
+
+#network.disconnected {
+    color: @red;
+}
+
+/* ── pulseaudio ────────────────────────────────────────────────────────── */
+#pulseaudio {
+    color: @pink;
+}
+
+#pulseaudio.muted {
+    color: @overlay0;
+}
+
+/* ── cpu ───────────────────────────────────────────────────────────────── */
+#cpu {
+    color: @peach;
+}
+
+#cpu.warning {
+    color: @yellow;
+}
+
+#cpu.critical {
+    color: @red;
+}
+
+/* ── memory ────────────────────────────────────────────────────────────── */
+#memory {
+    color: @mauve;
+}
+
+#memory.warning {
+    color: @yellow;
+}
+
+#memory.critical {
+    color: @red;
+}
+
+/* ── battery ───────────────────────────────────────────────────────────── */
+#battery {
+    color: @green;
+}
+
+#battery.charging,
+#battery.plugged {
+    color: @teal;
+}
+
+#battery.warning:not(.charging) {
+    color: @yellow;
+    animation-name: blink;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+#battery.critical:not(.charging) {
+    color: @red;
+    animation-name: blink;
+    animation-duration: 0.8s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}
+
+@keyframes blink {
+    to { color: @base; background-color: @red; }
+}
+
+/* ── power profiles ────────────────────────────────────────────────────── */
+#power-profiles-daemon {
+    color: @green;
+}
+#power-profiles-daemon.performance {
+    color: @peach;
+}
+#power-profiles-daemon.balanced {
+    color: @green;
+}
+#power-profiles-daemon.power-saver {
+    color: @blue;
+}
+
+/* ── idle inhibitor ────────────────────────────────────────────────────── */
+#idle_inhibitor {
+    color: @subtext;
+}
+#idle_inhibitor.activated {
+    color: @yellow;
+}
+
+/* ── tray ──────────────────────────────────────────────────────────────── */
+#tray {
+    background-color: @surface0;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: @red;
+    border-radius: 8px;
+}
+
+/* ── weather + clock — single center bubble ────────────────────────────── */
+#custom-weather {
+    color: @sky;
+    font-size: 14px;
+    background-color: @surface0;
+    border-radius: 8px 0 0 8px;
+    padding: 0 10px 0 14px;
+    margin: 4px 0 4px 3px;
+    border-right: 1px solid @surface1;
+}
+
+#custom-weather.unknown {
+    color: @overlay0;
+}
+
+
+/* ── mpris ─────────────────────────────────────────────────────────────── */
+#mpris {
+    color: @green;
+    font-style: italic;
+}
+
+#mpris.paused {
+    color: @subtext;
+}
+
+/* ── notification bell ─────────────────────────────────────────────────── */
+#custom-notification {
+    color: @lavender;
+    font-size: 15px;
+    padding: 0 10px;
+}
+
+#custom-notification.dnd-none,
+#custom-notification.dnd-notification {
+    color: @overlay0;
+}
+
+/* ── tooltip global ────────────────────────────────────────────────────── */
+tooltip {
+    background: @mantle;
+    border: 1px solid @surface1;
+    border-radius: 8px;
+}
+
+tooltip label {
+    color: @text;
+}

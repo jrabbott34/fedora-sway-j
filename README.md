@@ -1,9 +1,10 @@
 # fedora-sway-j
 
 Testing a Fedora + Sway build in a QEMU/KVM VM, as a possible mid-ground
-between the existing Debian/Sway build and Arch/AUR (after the AUR
-supply-chain incident). VM-first so the current Debian/Sway setup isn't
-touched.
+between Arch/AUR (after the AUR supply-chain incident) and something more
+curated. Dotfiles are ported from the existing Arch/AUR build at
+[jrabbott34/sway-j](https://github.com/jrabbott34/sway-j). VM-first so that
+build isn't touched.
 
 ## Why Fedora
 
@@ -51,21 +52,57 @@ Optional env vars: `VM_NAME`, `VCPUS`, `RAM_MB`, `DISK_GB`, `DISK_POOL_DIR`,
 
 ### Setting up Sway after Fedora is installed
 
-Copy `scripts/setup-sway.sh` into the guest (or clone this repo there) and
-run it as your normal user:
+Clone this repo into the guest, then run the two scripts in order:
 
 ```sh
-./scripts/setup-sway.sh
+sudo dnf -y install git
+git clone <this-repo-url>
+cd fedora-sway-j
+./scripts/setup-sway.sh       # installs the dnf-available package set
+# ...install the manual/COPR/Flatpak packages below if you want the full stack...
+./scripts/deploy-configs.sh   # symlinks dotfiles/.config/* into ~/.config
 ```
 
-Installs Sway, Waybar, a terminal (foot), a launcher (wofi), Wayland
-portals, audio (pipewire), screenshot/clipboard tools, and SELinux
-troubleshooting tools. Then log in and run `sway`.
+Then log out and select Sway from GDM, or run `dbus-run-session sway`.
+
+## Porting notes (sway-j -> Fedora)
+
+`dotfiles/` is a straight copy of sway-j's `.config` — the configs
+themselves aren't Arch-specific, so they're used unmodified.
+`scripts/setup-sway.sh` reimplements sway-j's `install.sh` using `dnf`
+instead of `yay`/`pacman`. Most of the stack maps over cleanly, but a
+chunk of what sway-j pulled from the AUR has no Fedora repo equivalent.
+These need a manual call before running `deploy-configs.sh`, or the
+corresponding config just won't have anything to launch:
+
+| Component | sway-j (AUR) | Fedora status | Suggested route |
+|---|---|---|---|
+| Compositor | `swayfx` | not packaged | build from source, or check COPR for your release; **or** fall back to vanilla `sway` (already installed by `setup-sway.sh`) and strip the `blur`/`corner_radius`/`shadow*`/`default_dim_inactive` lines from `dotfiles/.config/sway/config` — vanilla Sway doesn't understand SwayFX's extra directives |
+| Lock screen | `swaylock-effects` | not packaged | build from source, or COPR; falls back to plain `swaylock` (already installed) with no blur effect |
+| Notifications | `swaync` | not packaged | COPR (search "SwayNotificationCenter") or build from source |
+| Logout menu | `wlogout` | not packaged | COPR or build from source |
+| Clipboard manager | `cliphist` | not packaged | COPR, `go install`, or build from source |
+| Wallpaper daemon | `awww` | not packaged | build from source (check upstream for build deps) |
+| Color picker | `hyprpicker` | not packaged | COPR or build from source |
+| Touchpad gestures | `libinput-gestures` | not packaged | `pip install --user libinput-gestures`, or COPR |
+| GTK/theme tool | `nwg-look` | not packaged | COPR (nwg-shell tooling) |
+| Wallpaper picker | `waypaper` | not packaged | `pip install --user waypaper`, or COPR |
+| Image viewer | `swayimg` | not packaged | COPR or build from source |
+| Cursor theme | `bibata-cursor-theme` | not packaged | manual install from upstream GitHub releases |
+| GTK theme | `catppuccin-gtk-theme-mocha` | not packaged | manual install script from the Catppuccin GTK repo |
+| Nerd Fonts | `ttf-firacode-nerd`, `powerline-fonts` | not packaged | download from the nerd-fonts GitHub releases, or a COPR that mirrors them |
+| MS-compatible fonts | `ttf-ms-fonts` | not packaged | RPM Fusion nonfree's `mscore-fonts-installer` |
+| GDM theming GUI | `gdm-settings` | not packaged | Flatpak: `io.github.realmazharhussain.GdmSettings` |
+| Trezor Suite | `trezor-suite-bin` | not packaged | Flatpak: `io.trezor.trezor-suite`, or manual download |
+
+Everything else in sway-j's package list (Waybar, wofi, kanshi, wob,
+Alacritty, foot, fish, starship, yazi, Thunar, virt-manager/libvirt, cups,
+bluez, pipewire, etc.) is in Fedora's official repos and handled by
+`setup-sway.sh`.
 
 ## Open items
 
-- Decide whether to port over Waybar config/dotfiles from the Debian build,
-  or start fresh.
-- If any AUR-sourced tool has no Fedora/COPR/Flatpak equivalent, note it
-  here and decide: build from source, skip, or find an alternative.
+- Decide per-item above: build from source, use COPR, use Flatpak, or drop
+  the feature (e.g. run vanilla Sway without blur/shadows instead of
+  chasing SwayFX).
 - Once the VM build is validated, decide whether to move to bare metal.

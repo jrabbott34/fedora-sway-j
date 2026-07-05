@@ -1,0 +1,159 @@
+/* ── Tokyo Night palette ───────────────────────────────────────────────── */
+@define-color base   #1a1b26;
+@define-color mantle #16161e;
+@define-color surface0 #1e2030;
+@define-color surface1 #2a2b3d;
+@define-color overlay0 #414868;
+@define-color text   #c0caf5;
+@define-color subtext #787c99;
+@define-color blue   #7aa2f7;
+@define-color lavender #b4befe;
+@define-color green  #9ece6a;
+@define-color red    #f7768e;
+@define-color yellow #e0af68;
+@define-color pink   #bb9af7;
+
+* {
+    font-family: "FiraCode Nerd Font", monospace;
+    font-size: 13px;
+}
+
+.control-center {
+    background-color: alpha(@base, 0.95);
+    border-radius: 14px;
+    border: 1px solid @overlay0;
+    padding: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.control-center-list {
+    background: transparent;
+}
+
+.notification-row {
+    outline: none;
+    margin: 4px 0;
+}
+
+.notification {
+    background-color: @surface0;
+    border-radius: 10px;
+    border: 1px solid @surface1;
+    padding: 10px;
+    margin: 4px 0;
+    transition: all 0.15s ease;
+}
+
+.notification:hover {
+    background-color: @surface1;
+}
+
+.notification-content {
+    background: transparent;
+    padding: 4px;
+    border-radius: 8px;
+}
+
+.notification-default-action {
+    background: transparent;
+    border-radius: 10px;
+}
+
+.notification-default-action:hover {
+    background-color: @surface1;
+}
+
+.close-button {
+    background-color: @surface1;
+    color: @subtext;
+    border-radius: 6px;
+    border: none;
+    padding: 2px 6px;
+    min-width: 0;
+    min-height: 0;
+}
+
+.close-button:hover {
+    background-color: @red;
+    color: @base;
+}
+
+.notification-label {
+    color: @text;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.notification-summary {
+    color: @text;
+    font-weight: bold;
+}
+
+.notification-body {
+    color: @subtext;
+    font-size: 12px;
+}
+
+.notification-time {
+    color: @overlay0;
+    font-size: 11px;
+}
+
+/* ── title bar ─────────────────────────────────────────────────────────── */
+.widget-title {
+    color: @text;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 8px 4px;
+}
+
+.widget-title > button {
+    background-color: @surface1;
+    color: @subtext;
+    border-radius: 8px;
+    border: none;
+    padding: 4px 12px;
+}
+
+.widget-title > button:hover {
+    background-color: @red;
+    color: @base;
+}
+
+/* ── dnd toggle ────────────────────────────────────────────────────────── */
+.widget-dnd {
+    color: @text;
+    padding: 4px;
+}
+
+.widget-dnd > switch {
+    border-radius: 12px;
+    background-color: @surface1;
+    border: none;
+}
+
+.widget-dnd > switch:checked {
+    background-color: @blue;
+}
+
+.widget-dnd > switch slider {
+    border-radius: 10px;
+    background-color: @base;
+    min-width: 20px;
+    min-height: 20px;
+}
+
+/* ── low urgency ───────────────────────────────────────────────────────── */
+.low {
+    border-left: 3px solid @green;
+}
+
+/* ── normal urgency ────────────────────────────────────────────────────── */
+.normal {
+    border-left: 3px solid @blue;
+}
+
+/* ── critical urgency ──────────────────────────────────────────────────── */
+.critical {
+    border-left: 3px solid @red;
+}

@@ -1,0 +1,20 @@
+# kanshi display profiles — auto-applied on hotplug
+#   DP-5   = Samsung C27F390 (external, left)
+#   eDP-1  = Chimei Innolux (laptop, right)
+
+# Laptop only (external disconnected)
+profile laptop {
+    output eDP-1 enable resolution 1920x1080 position 0,0 scale 1
+}
+
+# Dual monitor — external left, laptop right (matches current layout)
+profile docked {
+    output DP-5  enable resolution 1920x1080 position 0,0    scale 1
+    output eDP-1 enable resolution 1920x1080 position 1920,0 scale 1
+}
+
+# External only — lid closed
+profile closed {
+    output DP-5  enable resolution 1920x1080 position 0,0 scale 1
+    output eDP-1 disable
+}
