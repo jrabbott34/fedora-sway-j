@@ -58,13 +58,27 @@ Clone this repo into the guest, then run the two scripts in order:
 sudo dnf -y install git
 git clone <this-repo-url>
 cd fedora-sway-j
-./scripts/setup-sway.sh          # installs the dnf-available package set
-./scripts/install-nerd-fonts.sh  # every config below references FiraCode Nerd Font
+./scripts/setup-sway.sh              # installs the dnf-available package set
+./scripts/install-nerd-fonts.sh      # every config below references FiraCode Nerd Font
+./scripts/install-sddm-sugar-candy.sh  # optional: swaps GDM for SDDM + Sugar Candy theme
 # ...install the other manual/COPR/Flatpak packages below if you want the full stack...
-./scripts/deploy-configs.sh      # symlinks dotfiles/.config/* into ~/.config
+./scripts/deploy-configs.sh          # symlinks dotfiles/.config/* into ~/.config
 ```
 
-Then log out and select Sway from GDM, or run `dbus-run-session sway`.
+Then log out and select Sway from your display manager (GDM by default, or SDDM if you ran
+`install-sddm-sugar-candy.sh`), or run `dbus-run-session sway`.
+
+### Login screen: SDDM + Sugar Candy
+
+`./scripts/install-sddm-sugar-candy.sh` installs `sddm` plus the Qt5 QML
+packages the theme needs (`qt5-qtgraphicaleffects`, `qt5-qtquickcontrols2`,
+`qt5-qtsvg`), disables `gdm.service`, enables `sddm.service`, and clones the
+actively-maintained [Kangie/sddm-sugar-candy](https://github.com/Kangie/sddm-sugar-candy)
+fork into `/usr/share/sddm/themes/sugar-candy` (the original
+`MarianArlt/sddm-sugar-candy` is unmaintained). Reboot afterward to see it.
+To customize the theme's background/blur/etc., copy
+`/usr/share/sddm/themes/sugar-candy/theme.conf` to `theme.conf.user` in the
+same directory and edit that -- see the theme's own README for options.
 
 ## Porting notes (sway-j -> Fedora)
 
