@@ -37,7 +37,7 @@ echo "  wallpaper folder: ~/Pictures -- drop images there, then Super+Shift+W to
 
 echo "==> Applying GTK theme, icons, and cursor via gsettings (best-effort)..."
 _gs() { gsettings set "$@" 2>/dev/null || true; }
-_gs org.gnome.desktop.interface gtk-theme        'catppuccin-mocha-standard-blue-dark'
+_gs org.gnome.desktop.interface gtk-theme        'Adwaita'
 _gs org.gnome.desktop.interface icon-theme       'Papirus-Dark'
 _gs org.gnome.desktop.interface cursor-theme     'Bibata-Modern-Ice'
 _gs org.gnome.desktop.interface cursor-size      24

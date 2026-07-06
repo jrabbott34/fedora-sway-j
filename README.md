@@ -90,7 +90,7 @@ corresponding config just won't have anything to launch:
 | Wallpaper picker | `waypaper` | not packaged | `sudo dnf -y install pipx gcc python3-devel cairo-devel cairo-gobject-devel gobject-introspection-devel gtk3-devel gtk4-devel && pipx install waypaper` (the dev headers are needed to build PyGObject; plain `pipx install waypaper` fails without them) |
 | Image viewer | `swayimg` | not packaged | COPR or build from source |
 | Cursor theme | `bibata-cursor-theme` | not packaged | manual install from upstream GitHub releases |
-| GTK theme | `catppuccin-gtk-theme-mocha` | not packaged | manual install script from the Catppuccin GTK repo |
+| GTK theme | `catppuccin-gtk-theme-mocha` | not packaged | manual install script from the Catppuccin GTK repo. Default is currently `Adwaita` with `gtk-application-prefer-dark-theme=true` (ships with Fedora, no install needed) so Thunar/GTK apps are dark out of the box until/unless Catppuccin is installed |
 | Nerd Fonts | `ttf-firacode-nerd`, `powerline-fonts` | not packaged | `./scripts/install-nerd-fonts.sh` (downloads FiraCode Nerd Font from upstream releases into `~/.local/share/fonts`) |
 | MS-compatible fonts | `ttf-ms-fonts` | not packaged | RPM Fusion nonfree's `mscore-fonts-installer` |
 | GDM theming GUI | `gdm-settings` | not packaged | Flatpak: `io.github.realmazharhussain.GdmSettings` |
