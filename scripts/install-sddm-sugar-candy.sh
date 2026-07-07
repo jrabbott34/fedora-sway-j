@@ -20,6 +20,11 @@ echo "==> Switching display manager: gdm -> sddm..."
 sudo systemctl disable --now gdm.service 2>/dev/null || true
 sudo systemctl enable sddm.service
 
+# Fedora Server defaults to multi-user.target (text-mode boot). Without
+# this, sddm.service is "enabled" but never actually starts at boot, and
+# you land on a plain TTY login instead of the SDDM screen.
+sudo systemctl set-default graphical.target
+
 echo "==> Installing Sugar Candy theme from ${THEME_REPO}..."
 TMP_DIR="$(mktemp -d)"
 git clone --depth 1 "$THEME_REPO" "$TMP_DIR/sddm-sugar-candy"
@@ -35,6 +40,8 @@ Current=sugar-candy
 EOF
 
 echo
-echo "==> Done. Reboot (or switch to a TTY and back) to see SDDM with Sugar Candy."
+echo "==> Done. Switching to graphical.target now (no reboot needed)..."
+sudo systemctl isolate graphical.target
+
 echo "    Theme config/background/customization: ${THEME_DIR}/theme.conf.user"
 echo "    (copy theme.conf to theme.conf.user before editing -- see the theme's README)"

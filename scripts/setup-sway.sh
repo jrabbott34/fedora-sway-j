@@ -107,6 +107,12 @@ sudo systemctl enable --now cups.socket
 sudo systemctl enable --now ipp-usb.service
 sudo systemctl enable gdm.service
 
+# Fedora Server defaults to multi-user.target (text-mode boot), so enabling
+# a display manager alone does nothing at boot -- it only starts once the
+# system reaches graphical.target. Without this, you land on a plain TTY
+# login every time.
+sudo systemctl set-default graphical.target
+
 sudo usermod -aG input "$USER" || true
 sudo usermod -aG libvirt "$USER"
 
