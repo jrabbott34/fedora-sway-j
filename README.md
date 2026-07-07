@@ -70,15 +70,25 @@ Then log out and select Sway from your display manager (GDM by default, or SDDM 
 
 ### Login screen: SDDM + Sugar Candy
 
-`./scripts/install-sddm-sugar-candy.sh` installs `sddm` plus the Qt5 QML
-packages the theme needs (`qt5-qtgraphicaleffects`, `qt5-qtquickcontrols2`,
-`qt5-qtsvg`), disables `gdm.service`, enables `sddm.service`, and clones the
+`./scripts/install-sddm-sugar-candy.sh` installs `sddm` plus the Qt6 QML
+packages the theme needs (`qt6-qt5compat`, `qt6-qtsvg`, `qt6-qtdeclarative` --
+Fedora's sddm links against Qt6, which dropped the Qt5-only
+`QtGraphicalEffects` module the theme imports, so the script patches the
+theme's `.qml` files to use `Qt5Compat.GraphicalEffects` instead), disables
+`gdm.service`, enables `sddm.service`, sets `graphical.target` as the boot
+default (Fedora Server boots to text-mode otherwise), and clones the
 actively-maintained [Kangie/sddm-sugar-candy](https://github.com/Kangie/sddm-sugar-candy)
 fork into `/usr/share/sddm/themes/sugar-candy` (the original
-`MarianArlt/sddm-sugar-candy` is unmaintained). Reboot afterward to see it.
-To customize the theme's background/blur/etc., copy
-`/usr/share/sddm/themes/sugar-candy/theme.conf` to `theme.conf.user` in the
-same directory and edit that -- see the theme's own README for options.
+`MarianArlt/sddm-sugar-candy` is unmaintained). It isolates to
+`graphical.target` at the end, so no reboot is needed to see it.
+
+The script also drops a `theme.conf.user` (overlaying the theme's defaults
+without touching `theme.conf` itself) setting the login screen clock to
+12hr (`HourFormat="hh:mm A"` under `[Locale Settings]`), matching the format
+used everywhere else in this build (Waybar clock, starship prompt). For
+further customization (background, blur, etc.), edit that same
+`theme.conf.user` -- see `theme.conf` in the same directory for all
+available keys.
 
 ## Porting notes (sway-j -> Fedora)
 

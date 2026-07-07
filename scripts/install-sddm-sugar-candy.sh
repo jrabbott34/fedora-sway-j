@@ -49,9 +49,18 @@ sudo tee /etc/sddm.conf.d/theme.conf > /dev/null <<'EOF'
 Current=sugar-candy
 EOF
 
+# Theme defaults to 24hr (HourFormat="HH:mm"); match the 12hr format used
+# everywhere else in this build (Waybar clock, starship). theme.conf.user
+# overlays theme.conf without touching the original -- see the theme's README.
+echo "==> Setting login screen clock to 12hr..."
+sudo tee "$THEME_DIR/theme.conf.user" > /dev/null <<'EOF'
+[Locale Settings]
+HourFormat="hh:mm A"
+EOF
+
 echo
 echo "==> Done. Switching to graphical.target now (no reboot needed)..."
 sudo systemctl isolate graphical.target
 
-echo "    Theme config/background/customization: ${THEME_DIR}/theme.conf.user"
-echo "    (copy theme.conf to theme.conf.user before editing -- see the theme's README)"
+echo "    Further customization (background, blur, etc.): edit ${THEME_DIR}/theme.conf.user"
+echo "    (see ${THEME_DIR}/theme.conf for all available keys)"
