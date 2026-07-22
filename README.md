@@ -105,7 +105,7 @@ corresponding config just won't have anything to launch:
 | Compositor | `swayfx` | not packaged | build from source, or check COPR for your release; **or** fall back to vanilla `sway` (already installed by `setup-sway.sh`) and strip the `blur`/`corner_radius`/`shadow*`/`default_dim_inactive` lines from `dotfiles/.config/sway/config` — vanilla Sway doesn't understand SwayFX's extra directives |
 | Lock screen | `swaylock-effects` | not packaged | build from source, or COPR; falls back to plain `swaylock` (already installed) with no blur effect |
 | Notifications | `swaync` | not packaged | COPR (search "SwayNotificationCenter") or build from source |
-| Logout menu | `wlogout` | not packaged | COPR or build from source |
+| Logout menu | `wlogout` | not packaged | `./scripts/install-wlogout.sh` -- builds from source ([ArtsyMacaw/wlogout](https://github.com/ArtsyMacaw/wlogout), meson/ninja + `gtk-layer-shell-devel`, which is in Fedora's repos) |
 | Clipboard manager | `cliphist` | not packaged | COPR, `go install`, or build from source |
 | Wallpaper daemon | `awww` | not packaged | build from source: [codeberg.org/LGFae/awww](https://codeberg.org/LGFae/awww) (`dnf install cargo rust`, `cargo build --release`, install `awww`/`awww-daemon` to `~/.local/bin`). Until built, `dotfiles/.config/waypaper/config.ini` and the sway autostart/keybind default to `swaybg` instead (already installed, no fade transitions) |
 | Color picker | `hyprpicker` | not packaged | COPR or build from source |
