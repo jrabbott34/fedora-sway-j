@@ -1,6 +1,6 @@
 # fedora-sway-j
 
-Testing a Fedora + Sway build in a QEMU/KVM VM, as a possible mid-ground
+Fedora + SwayFX build 
 between Arch/AUR (after the AUR supply-chain incident) and something more
 curated. Dotfiles are ported from the existing Arch/AUR build at
 [jrabbott34/sway-j](https://github.com/jrabbott34/sway-j). VM-first so that
