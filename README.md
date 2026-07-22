@@ -109,7 +109,7 @@ corresponding config just won't have anything to launch:
 | Clipboard manager | `cliphist` | not packaged | COPR, `go install`, or build from source |
 | Wallpaper daemon | `awww` | not packaged | build from source: [codeberg.org/LGFae/awww](https://codeberg.org/LGFae/awww) (`dnf install cargo rust`, `cargo build --release`, install `awww`/`awww-daemon` to `~/.local/bin`). Until built, `dotfiles/.config/waypaper/config.ini` and the sway autostart/keybind default to `swaybg` instead (already installed, no fade transitions) |
 | Color picker | `hyprpicker` | not packaged | COPR or build from source |
-| Touchpad gestures | `libinput-gestures` | not packaged | `pip install --user libinput-gestures`, or COPR |
+| Touchpad gestures | `libinput-gestures` | not packaged | `./scripts/install-libinput-gestures.sh` (COPR: `galaticstryder/libinput-gestures` -- installs to `/usr/bin`, matching the systemd service's hardcoded `ExecStart` path; a pip/pipx install would put the binary in `~/.local/bin` instead and silently not match) |
 | GTK/theme tool | `nwg-look` | not packaged | COPR (nwg-shell tooling) |
 | Wallpaper picker | `waypaper` | not packaged | `sudo dnf -y install pipx gcc python3-devel cairo-devel cairo-gobject-devel gobject-introspection-devel gtk3-devel gtk4-devel && pipx install waypaper` (the dev headers are needed to build PyGObject; plain `pipx install waypaper` fails without them) |
 | Image viewer | `swayimg` | not packaged | COPR or build from source |
