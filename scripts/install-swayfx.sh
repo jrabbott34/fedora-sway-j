@@ -30,9 +30,39 @@ DEPS=(
   libdrm-devel mesa-libgbm-devel libinput-devel libseat-devel libxkbcommon-devel
   libxcb-devel xcb-util-devel xcb-util-wm-devel xcb-util-renderutil-devel
   libliftoff-devel libdisplay-info-devel lcms2-devel pixman-devel
-  mesa-libGLES-devel systemd-devel libevdev-devel
+  mesa-libGLES-devel systemd-devel libevdev-devel hwdata
 )
 sudo dnf -y install "${DEPS[@]}"
+
+# Fedora's hwdata package ships the pnp.ids data file wlroots' DRM backend
+# needs, but doesn't ship a pkg-config file for it -- so wlroots' build-time
+# `dependency('hwdata')` check silently fails and it disables the DRM
+# backend entirely (a *build* succeeds either way, but the resulting sway
+# binary can't start on real hardware, only nested-in-X11). Registering a
+# minimal .pc file ourselves fixes this without patching wlroots.
+if ! pkg-config --exists hwdata 2>/dev/null; then
+  echo "==> Registering a pkg-config file for hwdata (needed for DRM backend support)..."
+  cat <<'EOF' | sudo tee /usr/share/pkgconfig/hwdata.pc > /dev/null
+prefix=/usr
+pkgdatadir=${prefix}/share/hwdata
+
+Name: hwdata
+Description: Hardware identification and configuration data
+Version: 1
+EOF
+fi
+
+# If a previous run already installed wlroots/scenefx .pc files, meson will
+# find those via plain pkg-config on this run and never rebuild from the
+# (now hwdata-fixed) subproject source -- then error trying to also resolve
+# the top-level project's own subproject reference to the same dependency
+# name ("Tried to override dependency ... which has already been resolved").
+# Clearing any previously installed copies avoids that entirely.
+echo "==> Clearing any previously installed wlroots/scenefx build artifacts..."
+sudo rm -f /usr/local/lib64/libwlroots-0.19.so /usr/local/lib64/libscenefx-0.4.so
+sudo rm -f /usr/local/lib64/pkgconfig/wlroots-0.19.pc /usr/local/lib64/pkgconfig/scenefx-0.4.pc
+sudo rm -rf /usr/local/include/wlroots-0.19 /usr/local/include/scenefx-0.4
+sudo ldconfig
 
 echo "==> Cloning SwayFX ${SWAYFX_TAG} + SceneFX ${SCENEFX_TAG} + wlroots ${WLROOTS_TAG}..."
 echo "    (this is a much bigger clone/build than the other scripts -- expect several minutes)"
@@ -77,10 +107,13 @@ if [[ -f "$SESSION_DESKTOP" ]]; then
 fi
 
 echo
-echo "==> Done. Verify with (clear bash's cached path first if it still points"
-echo "    at the old binary):"
-echo "    hash -r; sway --version"
-echo "    Should report something like 'swayfx version ${SWAYFX_TAG}' (not vanilla sway)."
+echo "==> Done. 'sway --version' only tells you what a fresh invocation would"
+echo "    be -- it does NOT confirm the compositor actually starts. If you're"
+echo "    at this terminal from a TTY (no session running), the most direct"
+echo "    test is to just run 'sway' right now and see if it takes over the"
+echo "    screen. If you're inside an already-running session instead, log"
+echo "    out completely and back in (a live compositor process won't pick"
+echo "    up a newly installed binary until it's restarted)."
 echo
 echo "==> Kept intact as a fallback: /usr/bin/sway (Fedora's vanilla dnf package)."
 echo "    If SwayFX ever fails to start, switch to a TTY (Ctrl+Alt+F3) and run"

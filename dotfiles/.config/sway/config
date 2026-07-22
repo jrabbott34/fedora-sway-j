@@ -212,7 +212,9 @@ for_window [app_id="lxappearance"]      floating enable
 for_window [app_id="nwg-look"]          floating enable
 for_window [app_id="yad"]               floating enable
 for_window [app_id="thunar"]            floating enable, resize set 900 600
-for_window [class="Thunar"]             floating enable, resize set 900 600
+# [class="Thunar"] matched XWayland's WM_CLASS -- this SwayFX build has
+# xwayland: NO, so there's no XWayland to match against; app_id="thunar"
+# above already covers Thunar as a native Wayland app.
 for_window [app_id="wlogout"]           floating enable, fullscreen enable
 for_window [app_id="yazi"]              floating enable, resize set 1200 700
 for_window [app_id="cava"]              floating enable, resize set 900 300
