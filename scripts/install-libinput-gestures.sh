@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
-# Installs libinput-gestures via COPR. Not in Fedora's official repos, and
-# unlike a pip/pipx install, COPR's RPM puts the binary at /usr/bin, which
-# is what dotfiles/.config/systemd/user/libinput-gestures.service hardcodes
-# as ExecStart -- so this is the install path that actually matches the
-# service file already deployed by deploy-configs.sh.
+# Installs libinput-gestures straight from upstream (bulletmark/libinput-gestures)
+# instead of via COPR -- COPR builds are pinned to specific Fedora release
+# chroots and can lag behind your actual Fedora version (e.g. no fedora-44
+# chroot yet on some COPR projects), while upstream's own installer just
+# needs python3 + libinput (already present) and drops the script straight
+# at /usr/bin/libinput-gestures, matching what
+# dotfiles/.config/systemd/user/libinput-gestures.service hardcodes as
+# ExecStart.
 set -euo pipefail
 
 if [[ $EUID -eq 0 ]]; then
@@ -11,12 +14,17 @@ if [[ $EUID -eq 0 ]]; then
   exit 1
 fi
 
-echo "==> Enabling COPR and installing libinput-gestures..."
-sudo dnf -y copr enable galaticstryder/libinput-gestures
-sudo dnf -y install libinput-gestures xdotool wmctrl
+echo "==> Installing xdotool/wmctrl (used by gesture actions)..."
+sudo dnf -y install xdotool wmctrl
 
 echo "==> Making sure \$USER is in the 'input' group (needed to read touchpad events)..."
 sudo usermod -aG input "$USER"
+
+echo "==> Cloning and installing libinput-gestures from upstream..."
+TMP_DIR="$(mktemp -d)"
+git clone --depth 1 https://github.com/bulletmark/libinput-gestures "$TMP_DIR/libinput-gestures"
+(cd "$TMP_DIR/libinput-gestures" && sudo ./libinput-gestures-setup install)
+rm -rf "$TMP_DIR"
 
 echo "==> Reloading/starting the user service..."
 systemctl --user daemon-reload
