@@ -30,7 +30,7 @@ DEPS=(
   libdrm-devel mesa-libgbm-devel libinput-devel libseat-devel libxkbcommon-devel
   libxcb-devel xcb-util-devel xcb-util-wm-devel xcb-util-renderutil-devel
   libliftoff-devel libdisplay-info-devel lcms2-devel pixman-devel
-  mesa-libGLES-devel systemd-devel
+  mesa-libGLES-devel systemd-devel libevdev-devel
 )
 sudo dnf -y install "${DEPS[@]}"
 
