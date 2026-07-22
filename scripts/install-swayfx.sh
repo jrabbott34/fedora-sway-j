@@ -51,22 +51,42 @@ git clone https://gitlab.freedesktop.org/wlroots/wlroots.git "$BUILD_DIR/subproj
 (cd "$BUILD_DIR/subprojects/wlroots" && git checkout "$WLROOTS_TAG")
 
 echo "==> Building (meson + ninja)..."
+echo "    Fedora's GCC/C23 combo is newer than what wlroots 0.19.0 was written"
+echo "    against -- e.g. it treats an unhandled newer libinput enum value and"
+echo "    a strchr() const-qualifier mismatch as hard errors via -Werror,"
+echo "    even though the pinned wlroots/scenefx combo is otherwise correct."
+echo "    CFLAGS=-Wno-error downgrades those back to non-fatal warnings."
 (
   cd "$BUILD_DIR"
-  meson setup build --prefix=/usr/local
+  CFLAGS="-Wno-error" meson setup build --prefix=/usr/local
   ninja -C build
   sudo ninja -C build install
   sudo ldconfig
 )
 
+echo "==> Registering /usr/local/lib64 with the dynamic linker..."
+echo "    (libscenefx/libwlroots land there, but it's not searched by default"
+echo "    on Fedora even after ldconfig, unless explicitly registered)"
+echo "/usr/local/lib64" | sudo tee /etc/ld.so.conf.d/local-swayfx.conf > /dev/null
+sudo ldconfig
+
+echo "==> Disambiguating the SDDM/GDM session entry from vanilla Sway's..."
+SESSION_DESKTOP="/usr/local/share/wayland-sessions/sway.desktop"
+if [[ -f "$SESSION_DESKTOP" ]]; then
+  sudo sed -i 's/^Name=.*/Name=SwayFX/' "$SESSION_DESKTOP"
+fi
+
 echo
-echo "==> Done. Verify with:"
-echo "    sway --version"
+echo "==> Done. Verify with (clear bash's cached path first if it still points"
+echo "    at the old binary):"
+echo "    hash -r; sway --version"
 echo "    Should report something like 'swayfx version ${SWAYFX_TAG}' (not vanilla sway)."
 echo
 echo "==> Kept intact as a fallback: /usr/bin/sway (Fedora's vanilla dnf package)."
 echo "    If SwayFX ever fails to start, switch to a TTY (Ctrl+Alt+F3) and run"
 echo "    /usr/bin/sway directly to get back into a known-working session."
+echo "    At the SDDM/GDM login screen, look for a 'SwayFX' session entry"
+echo "    (renamed above) distinct from the plain 'Sway' one."
 echo
 echo "==> Once confirmed working, uncomment the blur/corner_radius/shadow/"
 echo "    default_dim_inactive lines in dotfiles/.config/sway/config -- they"

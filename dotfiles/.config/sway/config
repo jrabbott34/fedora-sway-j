@@ -40,18 +40,17 @@ gaps outer 4
 smart_gaps on
 smart_borders on
 
-# SwayFX-only directives -- vanilla Sway (Fedora's dnf package) doesn't
-# understand these and will fail to start with them uncommented. Re-enable
-# if/when SwayFX is built/installed on this machine (see README.md).
-# corner_radius 10
-# blur enable
-# blur_passes 2
-# blur_radius 5
-# blur_noise 0.0
-# shadows enable
-# shadow_blur_radius 20
-# shadow_color #00000044
-# default_dim_inactive 0.05
+# SwayFX-only directives -- require SwayFX (./scripts/install-swayfx.sh),
+# vanilla Sway doesn't understand these and will fail to start otherwise.
+corner_radius 10
+blur enable
+blur_passes 2
+blur_radius 5
+blur_noise 0.0
+shadows enable
+shadow_blur_radius 20
+shadow_color #00000044
+default_dim_inactive 0.05
 
 # class                 border  bg      text    indicator child_border
 client.focused          #7aa2f7 #1a1b26 #c0caf5 #7aa2f7   #7aa2f7
